@@ -1,0 +1,28 @@
+*{
+    padding: 0;
+    margin:0;
+    box-sizing: border-box;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#board{
+    width: 80vw;
+    height: 80vh;   
+    position:relative;    
+    background-size: cover;
+    border: 1px solid black;
+}
+#player{
+    /*background-image:url("./img/kenny.png");
+    background-size: cover;
+*/
+    background-color: blue;
+    height: 30px;
+    width: 15px;
+    position:absolute;
+    bottom:0;
+    left: 0;
+}   
