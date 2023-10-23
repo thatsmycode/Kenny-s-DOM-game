@@ -64,3 +64,42 @@ class Player {
 
 
 }
+
+class Block {
+    constructor(BoardWidth, BoardHeight, element){   
+        this.verticalPosition = 0;
+        this.horizontalPosition = BoardWidth - 15// SUBSTITUIR 15 X BLOCK.CLIENTwidTh
+        this.speed = 1;
+        this.direction = "left";
+
+        this.blockElement = element;
+
+        this.width=15;
+        this.height=30;
+       
+        this.boardWidth = BoardWidth;
+        this.boardHeight = BoardHeight;
+        this.blockElement.style.left=`${this.verticalPosition}px`;
+        this.blockElement.style.left=`${this.horizontalPosition}px`;
+        this.blockElement.style.width=`${this.width}px`;
+        this.blockElement.style.height=`${this.height}px`;
+        
+        
+    }
+    move(){
+        if(this.direction === "left"){                        
+            this.horizontalPosition -= this.speed;
+            if(this.horizontalPosition <= 0){
+                this.direction= "right";
+            }
+
+        }else{           
+            this.horizontalPosition += this.speed;
+            if (this.horizontalPosition >= this.boardWidth - this.width){
+                this.direction ="left";
+            }
+        }
+        
+        this.blockElement.style.left=`${this.horizontalPosition}px`;
+    }
+}
