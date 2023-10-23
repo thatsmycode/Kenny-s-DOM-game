@@ -37,24 +37,50 @@ class Game {
     }
     checkForCollissions(){
         this.enemyArray.forEach((e) =>{
-                
-            if (this.player.verticalPosition <= e.height){//check ifplayer its jumping over it
+            //BLOCK LATERAL COLLISIONS WITH PLAYER
+            if (this.player.verticalPosition < e.height){//check if player its jumping over it
                 
                 if(this.player.horizontalPosition + this.player.width >= e.horizontalPosition 
-                    && this.player.horizontalPosition <= e.horizontalPosition +e.width){
+                    && this.player.horizontalPosition <= e.horizontalPosition + e.width){
 
-                console.log(
-                    "colision",
-                    "player left: ",this.player.horizontalPosition,
-                    "player right: ",this.player.horizontalPosition +this.player.width,
-                    "block left: ", e.horizontalPosition,
-                    "block right: ", e.horizontalPosition + e.width);
-                this.gameStop = true;
+                    console.log(
+                        "colision",
+                        "player left: ",this.player.horizontalPosition,
+                        "player right: ",this.player.horizontalPosition +this.player.width,
+                        "block left: ", e.horizontalPosition,
+                        "block right: ", e.horizontalPosition + e.width);
+                    
+                        this.gameStop = true;
                 }
             }
+
+            //BlOCK VERTICAL COLLISIONS WITH PLAYER
+            if ( this.player.verticalPosition === e.height){
+
+                if(this.player.horizontalPosition + this.player.width >= e.horizontalPosition 
+                    && this.player.horizontalPosition <= e.horizontalPosition + e.width){
+                    
+                        console.log("enemy dead",
+                            this.enemyArray,this.enemyArray.indexOf(e));
+
+
+                        this.removeEnemy(this.enemyArray.indexOf(e));
+                }
+            }
+
+
         })
+    }
+    removeEnemy(e){
         
 
+        console.log(this.enemyArray);
+
+        //body.remove(this.enemyArray[e]);//body
+        this.enemyArray[e].blockElement.remove();
+        this.enemyArray.splice(e,1);
+        
+        console.log("enemy killed");
     }
 
 }

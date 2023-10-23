@@ -67,15 +67,16 @@ class Player {
 
 class Block {
     constructor(BoardWidth, BoardHeight, element){   
+        this.width=15;
+        this.height=30;
         this.verticalPosition = 0;
-        this.horizontalPosition = BoardWidth - 15// SUBSTITUIR 15 X BLOCK.CLIENTwidTh
+        this.horizontalPosition = BoardWidth - this.width
         this.speed = 1;
         this.direction = "left";
 
         this.blockElement = element;
 
-        this.width=15;
-        this.height=30;
+        
        
         this.boardWidth = BoardWidth;
         this.boardHeight = BoardHeight;
