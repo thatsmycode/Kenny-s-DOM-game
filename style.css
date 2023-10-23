@@ -19,9 +19,6 @@ body {
 }
 
 #player {
-    /*background-image:url("./img/kenny.png");
-    background-size: cover;
-*/
     background-color: blue;
     height: 30px;
     width: 15px;
@@ -30,14 +27,31 @@ body {
     left: 0;
 }
 
-.enemy {
+.player-going-right {
+    background-image: red;
+}
 
-    /*background-image: url("./img/ghost.png");
-        background-size: cover;*/
-    background-color: yellowgreen;
+.player-going-left {
+    background-color: green;
+}
+
+.enemy {
+    background-color: yellow;
     height: 30px;
     width: 15;
     position: absolute;
     bottom: 0;
     left: 0;
+}
+
+.box {
+    background-image: url("./img/box.png");
+    background-size: cover;
+
+    height: 60px;
+    width: 60px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+
 }

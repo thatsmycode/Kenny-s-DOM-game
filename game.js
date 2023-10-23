@@ -11,9 +11,11 @@ class Game {
 
         this.gameStop = false;
         this.enemyArray = [];
+        this.boxArray = [];
+
         this.level = 1;
         this.player = new Player(this.boardWidth,this.boardHeight);
-
+        this.kills = 0;
 
         //console.log(    ); 
     }
@@ -25,16 +27,30 @@ class Game {
 
     gravity(){
         this.player.fall();
+        this.boxArray.forEach((e)=>{
+            e.fall();
+        })
     }
 
     addEnemy(){
-        const newElement = document.createElement("div")
+        const newElement = document.createElement("div");
         newElement.className = "enemy";
 
         const enemy = new Block(this.boardWidth, this.boardHeight, newElement);
         this.enemyArray.push(enemy);
         this.board.appendChild(newElement);
     }
+    addBox(){
+        const newBoxElement = document.createElement("div");
+        newBoxElement.className = "box";
+
+        const box = new Box(this.boardWidth, this.boardHeight, newBoxElement);
+        this.boxArray.push(box);
+        this.board.appendChild(newBoxElement)
+    }
+
+
+
     checkForCollissions(){
         this.enemyArray.forEach((e) =>{
             //BLOCK LATERAL COLLISIONS WITH PLAYER
@@ -60,27 +76,22 @@ class Game {
                 if(this.player.horizontalPosition + this.player.width >= e.horizontalPosition 
                     && this.player.horizontalPosition <= e.horizontalPosition + e.width){
                     
-                        console.log("enemy dead",
-                            this.enemyArray,this.enemyArray.indexOf(e));
-
-
+                        console.log("enemy killed");
                         this.removeEnemy(this.enemyArray.indexOf(e));
                 }
             }
+            //BLOCKS LATERAL COLLISSIONS WITH BOX
+
+            //if( )
 
 
         })
     }
     removeEnemy(e){
-        
-
-        console.log(this.enemyArray);
-
-        //body.remove(this.enemyArray[e]);//body
         this.enemyArray[e].blockElement.remove();
         this.enemyArray.splice(e,1);
-        
-        console.log("enemy killed");
+        this.kills += 1;        
+        console.log("enemy removed");
     }
 
 }
@@ -101,6 +112,7 @@ function animate(){
     })
     if (frames === 1){
         game.addEnemy();
+        game.addBox();
     }
     if (frames % 1000 === 0){
         game.addEnemy();
