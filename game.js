@@ -37,11 +37,12 @@ document.addEventListener("keydown",(e) => game.movement(e))
 //we need to make arrowfunction in order to acces things inside objects!!!!
 
 function animate(){
-    gravity();
+    game.gravity();
     
-    if(!gameStop){
+    if(!game.gameStop){
         animationId = requestAnimationFrame(animate);
     }
 
 
 }
+animate();

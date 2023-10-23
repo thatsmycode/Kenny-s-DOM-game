@@ -55,9 +55,9 @@ class Player {
     }
     fall(){
         this.verticalPosition -= 2;
-            if(this.verticalPosition <= 0){
-                this.verticalPosition = 0;
-            }  
+        if(this.verticalPosition <= 0){
+            this.verticalPosition = 0;
+        }  
         this.playerElement.style.bottom = `${this.verticalPosition}px`; 
         this.isJumping = false;
     }
