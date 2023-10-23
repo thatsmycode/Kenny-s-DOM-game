@@ -28,7 +28,7 @@ body {
 }
 
 .player-going-right {
-    background-image: red;
+    background-color: red;
 }
 
 .player-going-left {
@@ -44,6 +44,17 @@ body {
     left: 0;
 }
 
+.victory-point{
+    height: 60px;
+    width: 60px;
+    position: absolute;
+    background-color: blueviolet;
+    bottom: 0px;
+    left:90%
+}
+
+
+
 .box {
     background-image: url("./img/box.png");
     background-size: cover;
@@ -54,4 +65,10 @@ body {
     bottom: 0px;
     left: 0px;
 
+}
+#info{
+    position:absolute;
+    left:45%;
+    background-color: red;
+    
 }

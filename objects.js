@@ -19,17 +19,13 @@ class Player {
 
             
 
-            this.playerElement.classList.remove("player-going-left")
-            this.playerElement.classList.add("player-going-right")
-
             this.horizontalPosition += this.speed;
             if(this.horizontalPosition >= this.boardWidth){
                 this.horizontalPosition = 0;
             }
         }else if(e.key === "ArrowLeft"){
 
-            this.playerElement.classList.remove("player-going-right")
-            this.playerElement.classList.add("player-going-left")
+            
 
             this.horizontalPosition -= this.speed;  
            
@@ -59,7 +55,7 @@ class Player {
             this.verticalPosition = 0;
         }  
         this.playerElement.style.bottom = `${this.verticalPosition}px`; 
-        this.isJumping = false;
+        
     }
 
 
@@ -111,13 +107,13 @@ class Box {
         this.boardWidth = BoardWidth;
         this.boardHeight = BoardHeight;
         this.width = 60;
-        this.heigth = 60;
+        this.height = 60;
         this.isFalling = true;
         this.verticalPosition = BoardHeight;
         this.horizontalPosition = Math.floor(Math.random() * (BoardWidth - this.width));
         
         this.boxElement.style.width=`${this.width}px`;
-        this.boxElement.style.height=`${this.heigth}px`;
+        this.boxElement.style.height=`${this.height}px`;
         
     }
 
@@ -128,7 +124,8 @@ class Box {
 
             if(this.verticalPosition <= 0){
                 this.verticalPosition = 0;
-                this.isFalling = false;
+                this.isFalling = false
+                //console.log(this.isFalling = false);
             } 
         this.boxElement.style.bottom = `${this.verticalPosition}px`; 
         this.boxElement.style.left = `${this.horizontalPosition}px`; 

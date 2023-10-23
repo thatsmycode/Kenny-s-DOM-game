@@ -1,6 +1,6 @@
 
 const body = document.querySelector("body");
-const info = document.querySelector("#info");
+
 
 
 class Game {
@@ -22,15 +22,6 @@ class Game {
     movement(e) {
         if (!this.gameStop) {
             this.player.move(e);
-            /* //intentava cridar aqui lo de cambiar les  classes, per si desde dins el objecte playey (funcio move()) no podia llegirho
-            if(e.key === "ArrowRight"){
-                this.player.playerElement.classList.remove("player-going-left")
-                this.player.playerElement.classList.add("player-going-right")
-            }
-            else if (e.key === "ArrowLeft"){
-                this.playerElement.classList.remove("player-going-right");
-                this.playerElement.classList.add("player-going-left");
-            }   */        
         }
     }
 
@@ -62,13 +53,11 @@ class Game {
         this.boxArray.push(box);
         this.board.appendChild(newBoxElement)
 
-    
-}
+    }
 
 
 
     checkForCollissions() {
-        
         this.enemyArray.forEach((e) => {
             //BLOCK LATERAL COLLISIONS WITH PLAYER
             if (this.player.verticalPosition < e.height) {//check if player its jumping over it
@@ -95,13 +84,15 @@ class Game {
             }
            
             //BLOCKS LATERAL COLLISSIONS WITH BOX-- no funciona correctament.
-            this.boxArray.forEach((b) => {
+          /*  this.boxArray.forEach((b) => {
 
 
                 if (b.verticalPosition <= e.height &&
                     b.horizontalPosition <= e.horizontalPosition + e.width &&
-                    b.horizontalPosition + b.width >= e.horizontalPosition ){
-                 
+                    b.horizontalPosition + b.width <= e.horizontalPosition ||
+                    
+                    e.horizontalPosition <= b.horizontalPosition + b.width &&
+                    e.horizontalPosition + e.width <= b.horizontalPosition) { 
                         
                     console.log("yabadabadu") 
                     if (e.direction === "left") {
@@ -110,10 +101,10 @@ class Game {
                         e.direction = "left";
                     }
                 }
-            })       
+            })  */      
         })
     }
-    checkForBoxPile() { // si la crides peta
+    checkForBoxPile() {
         let floorBoxes = [];
         this.boxArray.forEach((b) => {
             if (!b.isfalling) {
@@ -140,7 +131,6 @@ class Game {
         this.enemyArray[e].blockElement.remove();
         this.enemyArray.splice(e, 1);
         this.kills += 1;
-        info.innerText = `${this.kills}KILLS`;
         console.log("enemy removed");
     }
     addVictoryPoint() {
@@ -161,20 +151,17 @@ let frames = 0;
 
 function animate() {
     frames++;
-    //game.checkForBoxPile();si la crides peta
-    game.checkForCollissions();
+    game.checkForBoxPile()
+    //game.checkForCollissions();
     game.gravity();
     game.moveEnemy();
     if (frames === 1) {
-        game.addEnemy();   
+        //game.addEnemy();
+        game.addBox();
         //game.addVictoryPoint();
     }
     if (frames % 100 === 0) {
-        game.addEnemy();
-        
-    }
-    if (frames % 500 === 0) {
-        
+        //game.addEnemy();
         game.addBox();
     }
 
