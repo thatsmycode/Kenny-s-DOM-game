@@ -17,7 +17,7 @@ class Player {
     move(e){
         if(e.key === "ArrowRight"){
 
-            console.log(e);
+            
 
             this.playerElement.classList.remove("player-going-left")
             this.playerElement.classList.add("player-going-right")

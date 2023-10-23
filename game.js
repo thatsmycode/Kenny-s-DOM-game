@@ -35,10 +35,29 @@ class Game {
         this.enemyArray.push(enemy);
         this.board.appendChild(newElement);
     }
+    checkForCollissions(){
+        this.enemyArray.forEach((e) =>{
+                
+            if (this.player.verticalPosition <= e.height){//check ifplayer its jumping over it
+                
+                if(this.player.horizontalPosition + this.player.width >= e.horizontalPosition 
+                    && this.player.horizontalPosition <= e.horizontalPosition +e.width){
+
+                console.log(
+                    "colision",
+                    "player left: ",this.player.horizontalPosition,
+                    "player right: ",this.player.horizontalPosition +this.player.width,
+                    "block left: ", e.horizontalPosition,
+                    "block right: ", e.horizontalPosition + e.width);
+                this.gameStop = true;
+                }
+            }
+        })
+        
+
+    }
 
 }
-
-
 
 let game = new Game;
 
@@ -49,14 +68,18 @@ let frames = 0;
 
 function animate(){
     frames ++;
-    console.log(frames);
+   game.checkForCollissions();
     game.gravity();
     game.enemyArray.forEach((e)=>{
         e.move();
     })
+    if (frames === 1){
+        game.addEnemy();
+    }
     if (frames % 1000 === 0){
         game.addEnemy();
     }
+
 
     if(!game.gameStop){
         animationId = requestAnimationFrame(animate);
