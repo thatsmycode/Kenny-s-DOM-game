@@ -90,8 +90,10 @@ class Game {
 
                     if (e.direction === "left") {
                         e.direction = "right";
+                        e.blockElement.classList.add("swap")
                     } else {
                         e.direction = "left";
+                        e.blockElement.classList.remove("swap")
                     }
                 }
             })
@@ -108,7 +110,6 @@ class Game {
                         if (b.verticalPosition < f.verticalPosition + f.height) {
                             b.isFalling = false;
 
-                            console.log(b,b.isFalling)
                             b.boxElement.style.bottom = `${f.verticalPosition + f.height}px`;
                             this.floorBoxes.push(b)
                             
@@ -132,8 +133,9 @@ class Game {
     }
     addVictoryPoint() {
         const victory = document.createElement("div");
-        victory.className = "victory-point";
-        victory.style.left = this.boardWidth - victory.width;
+        victory.classList.add("victory-point");
+        //victory.style.width = "60px";
+        victory.style.left = `${this.boardWidth - victory.width}px`;
         this.board.appendChild(victory);
     }
     checkPlayerBoxCollisions(){
@@ -143,19 +145,32 @@ class Game {
                 this.player.horizontalPosition + this.player.width > e.horizontalPosition&&
                 this.player.verticalPosition < e.verticalPosition + e.height
                 ){
-                    console.log("player-box-colie")
+                    //console.log("player-box-colie")
 
 //if( this.player.horizontalPosition + this.player.width < e.horizontalPosition){//if player is on the left
 
 //}
-                   if(this.player.horizontalPosition +
-                    this.player.width >= e.horizontalPosition){
-                        console.log("is this working?");
-                    this.player.playerElement.style.left = `${e.horizontalPosition - this.player.width}px`
+                   
+                   if(this.player.verticalPosition === e.verticalPosition +e.height){
+                        console.log("is this working? vertical collies?");
+                        
+                    this.player.playerElement.style.bottom = `${e.verticalPosition + e.height - this.player.width}px`;
                    }
+                   else  if(this.player.horizontalPosition +
+                    this.player.width >= e.horizontalPosition){
+                        console.log("left-right collie");
+                    this.player.playerElement.style.left = `${e.horizontalPosition - this.player.width}px`;
+                   }
+
+
                 }
 
         });
+    }
+    changeBackground(){//NOT WORKING
+        if(this.player.horizontalPosition + this.player.width === this.boardWidth){
+            this.board.className = "background2"
+        }
     }
 
 }
@@ -174,9 +189,10 @@ function animate() {
     game.checkPlayerBoxCollisions();
     game.gravity();
     game.moveEnemy();
+    //game.changeBackground();
     if (frames === 1) {
-        //game.addEnemy();
-        //game.addVictoryPoint();
+        game.addEnemy();
+        game.addVictoryPoint();
         game.addBox();
     }
     if (frames % 5000 === 0) {

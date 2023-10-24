@@ -63,7 +63,7 @@ class Player {
 
 class Block {
     constructor(BoardWidth, BoardHeight, element){   
-        this.width=15;
+        this.width=32;
         this.height=30;
         this.verticalPosition = 0;
         this.horizontalPosition = BoardWidth - this.width;
@@ -84,12 +84,14 @@ class Block {
             this.horizontalPosition -= this.speed;
             if(this.horizontalPosition <= 0){
                 this.direction= "right";
+                this.blockElement.classList.add("swap");
             }
 
         }else{           
             this.horizontalPosition += this.speed;
             if (this.horizontalPosition >= this.boardWidth - this.width){
                 this.direction ="left";
+                this.blockElement.classList.remove("swap");
             }
         }
         

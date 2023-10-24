@@ -17,13 +17,19 @@ body {
     background-size: cover;
     border: 1px solid black;
 }
-
+.background1{
+    background-image: url("./img/Dark_Forest_9.jpg");
+}
+.background2{
+    background-image: url("./img/Dark_Forest_9.jpg");
+}
 #player {
     height: 30px;
     width: 15px;
     position: absolute;
     bottom: 0;
     left: 0;
+   
 }
 
 .player-going-right {
@@ -35,7 +41,10 @@ body {
 }
 
 .enemy {
-    background-color: yellow;
+   
+    background-image: url("./img/ghost.png");
+    
+    background-size: cover;
     height: 30px;
     width: 15;
     position: absolute;
@@ -43,11 +52,17 @@ body {
     left: 0;
 }
 
+.swap{
+     
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
 .victory-point{
     height: 60px;
     width: 60px;
     position: absolute;
-    background-color: blueviolet;
+    background-image: url("./img/door.png");
     bottom: 0px;
     left:90%
 }
