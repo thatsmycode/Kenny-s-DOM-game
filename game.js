@@ -114,35 +114,23 @@ class Game {
     checkForBoxPile() { // si la crides peta  
 
 
-        
+
         this.boxArray.forEach((b) => {
             if (b.isFalling) {
                 this.floorBoxes.forEach((f) => {
-                    console.log(f,b);
 
-
-                    // COLLISSION DETECTION STANDARD ALGORITHM (SQUARE VS SQUARE)
-                 /*    if (
+                    if (
                         b.horizontalPosition < f.horizontalPosition + f.width &&
-                        b.horizontalPosition + b.horizontalPosition.width > f.horizontalPosition &&
-                        b.verticalPosition < f.verticalPosition + f.height &&
-                        b.verticalPosition + b.height > f.verticalPosition
-                    ) {
-                        console.log('COLLISSION DETECTED');
-                    } */
+                        b.horizontalPosition + b.width > f.horizontalPosition){
 
+                        if (b.verticalPosition < f.verticalPosition + f.height) {
+                            b.isFalling = false;
 
-                       if (
-                           b.horizontalPosition < f.horizontalPosition + f.width &&
-                           b.horizontalPosition + b.width > f.horizontalPosition
-                       ) {
-                           if (b.verticalPosition < f.verticalPosition + f.height) {
-                               b.isFalling = false;
-                               b.boxElement.style.bottom = `${f.verticalPosition + f.height}px`;
-                           }
-                       }
-       
-
+                            console.log(b,b.isFalling)
+                            b.boxElement.style.bottom = `${f.verticalPosition + f.height}px`;
+                            this.floorBoxes.push(b)
+                        }
+                    }
                 });
             }
         });
@@ -177,10 +165,10 @@ function animate() {
     game.gravity();
     game.moveEnemy();
     if (frames === 1) {
-        game.addEnemy();
+        //game.addEnemy();
         //game.addVictoryPoint();
     }
-    if (frames % 100 === 0) {
+    if (frames % 5000 === 0) {
         game.addEnemy();
 
     }

@@ -117,16 +117,15 @@ class Box {
         if (this.isFalling){
             
             this.verticalPosition -= 2;
-            
-            if( this.isFalling){
+                     
             if(this.verticalPosition <= 0){
                 this.verticalPosition = 0;
-                this.isFalling = false
+                this.isFalling = false;
                 floorBoxes.push(this);
 
                 console.log(floorBoxes[0]);
             } 
-        }
+    
         this.boxElement.style.bottom = `${this.verticalPosition}px`; 
         this.boxElement.style.left = `${this.horizontalPosition}px`; 
         }
