@@ -123,7 +123,6 @@ class Box {
                 this.isFalling = false;
                 floorBoxes.push(this);
 
-                console.log(floorBoxes[0]);
             } 
     
         this.boxElement.style.bottom = `${this.verticalPosition}px`; 
