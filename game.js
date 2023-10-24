@@ -8,7 +8,7 @@ class Game {
         this.board = document.querySelector("#board");
         this.boardWidth = board.clientWidth;
         this.boardHeight = board.clientHeight;
-
+        this.stopBox = false;
         this.gameStop = false;
         this.enemyArray = [];
         this.boxArray = [];
@@ -54,15 +54,16 @@ class Game {
             e.move();
         })
     }
-    addBox() {
-        const newBoxElement = document.createElement("div");
-        newBoxElement.className = "box";
+    addBox(){
+        if(!this.stopBox){
 
-        const box = new Box(this.boardWidth, this.boardHeight, newBoxElement);
-        this.boxArray.push(box);
-        this.board.appendChild(newBoxElement)
-
-
+            const newBoxElement = document.createElement("div");
+            newBoxElement.className = "box";
+    
+            const box = new Box(this.boardWidth, this.boardHeight, newBoxElement);
+            this.boxArray.push(box);
+            this.board.appendChild(newBoxElement)
+        } 
     }
 
 
@@ -129,6 +130,12 @@ class Game {
                             console.log(b,b.isFalling)
                             b.boxElement.style.bottom = `${f.verticalPosition + f.height}px`;
                             this.floorBoxes.push(b)
+                            
+                            //check when a box is almost touching the vertical limit to stop adding boxes for garanting an upper space to cross them
+
+                            if (b.verticalPosition + b.height >= this.boardHeight - b.height * 2){//this can me upgraded 
+                                this.stopBox = true;
+                            }
                         }
                     }
                 });
@@ -172,7 +179,7 @@ function animate() {
         game.addEnemy();
 
     }
-    if (frames % 100 === 0) {
+    if (frames % 90 === 0) {
 
         game.addBox();
     }
