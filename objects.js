@@ -69,11 +69,7 @@ class Block {
         this.horizontalPosition = BoardWidth - this.width;
         this.speed = 1;
         this.direction = "left";
-
         this.blockElement = element;
-
-        
-       
         this.boardWidth = BoardWidth;
         this.boardHeight = BoardHeight;
         this.blockElement.style.bottom=`${this.verticalPosition}px`;
@@ -117,16 +113,20 @@ class Box {
         
     }
 
-    fall(){
+    fall(floorBoxes){
         if (this.isFalling){
             
             this.verticalPosition -= 2;
-
+            
+            if( this.isFalling){
             if(this.verticalPosition <= 0){
                 this.verticalPosition = 0;
                 this.isFalling = false
-                //console.log(this.isFalling = false);
+                floorBoxes.push(this);
+
+                console.log(floorBoxes[0]);
             } 
+        }
         this.boxElement.style.bottom = `${this.verticalPosition}px`; 
         this.boxElement.style.left = `${this.horizontalPosition}px`; 
         }
