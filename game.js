@@ -1,7 +1,7 @@
 
 const body = document.querySelector("body");
 const info = document.querySelector("#info");
-const levelInfo = document.querySelector("#levelInfo");
+const levelInfo = document.querySelector("#level");
 
 class Game {
     constructor() {
@@ -35,8 +35,10 @@ class Game {
         }
     }
     interaction(e){
-        if (!this.victoryDoor){
+        if (!this.victoryDoor ){
+           if(e.key === " "){
             console.log("there is nothing to interact with in this level...")
+            }
         }
         else{
             if (this.player.verticalPosition >= this.victoryDoor.verticalPosition &&
