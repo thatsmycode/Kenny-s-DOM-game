@@ -38,7 +38,6 @@ class Game {
     interaction(e) {
         if (!this.victoryDoor) {
             if (e.key === " ") {
-                console.log("There is nothing to interact with in this level...")
                 help.innerText = "There is nothing to interact with in this level..."
             }
             setTimeout(() => {

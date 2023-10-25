@@ -121,6 +121,28 @@ body {
     background-repeat: no-repeat;
     background-position:  center;
 }
+#container{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-top:10px;
+    width: 80vw;
+    justify-content:space-between;
+}
+#restart{
+    background-image:url("./img/restart.png");
+    background-size: cover;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
+#exit{
+    background-image:url("./img/exit.png");
+    background-size: cover;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
 #help{
-   
+   font-size: 3em;
 }
