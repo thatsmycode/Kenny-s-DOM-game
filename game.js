@@ -13,11 +13,12 @@ class Game {
         this.enemyArray = [];
         this.boxArray = [];
         this.floorBoxes = [];
+        this.victoryDoor;
         this.totalLevels = 3;
         this.level = 1;
         this.player = new Player(this.boardWidth, this.boardHeight);
         this.kills = 0;
-
+        this.isInFront = false;
     }
     movement(e) {
         if (!this.gameStop) {
@@ -33,6 +34,16 @@ class Game {
             }   
         }
     }
+    interaction(e){
+        if (this.player.verticalPosition >= this.victoryDoor.verticalPosition &&
+            this.player.horizontalPosition < this.victoryDoor.horizontalPosition + this.victoryDoor.width &&
+            this.player.horizontalPosition + this.player.width > this.victoryDoor.horizontalPosition&&
+            this.player.verticalPosition < this.victoryDoor.verticalPosition + this.victoryDoor.height
+            ){
+            console.log("you can interact!");
+                    this.victoryDoor.open(e)// this returns undefined
+    }
+}
     gravity() {
         this.player.fall();
         this.boxArray.forEach((e) => {
@@ -71,6 +82,7 @@ class Game {
                                  "block left: ", e.horizontalPosition,
                                  "block right: ", e.horizontalPosition + e.width);*/
                     this.gameStop = true;
+                    this.board.className = ("you-lose");
                 }
             }
             //BlOCK VERTICAL COLLISIONS WITH PLAYER
@@ -116,7 +128,7 @@ class Game {
                             //check when a box is almost touching the vertical limit to stop adding boxes for garanting an upper space to cross them
 
                             if (b.verticalPosition + b.height >= this.boardHeight - b.height * 2){//this can be a modificable variable inside game 
-                                this.stopBox = true;
+                              this.stopBox = true;
                             }
                         }
                     }
@@ -128,15 +140,16 @@ class Game {
         this.enemyArray[e].blockElement.remove();
         this.enemyArray.splice(e, 1);
         this.kills += 1;
-        info.innerText = `${this.kills}KILLS`;
+        info.innerText = `KILLS ${this.kills}`;
         console.log("enemy removed");
     }
-    addVictoryPoint() {
-        const victory = document.createElement("div");
-        victory.classList.add("victory-point");
-        //victory.style.width = "60px";
-        victory.style.left = `${this.boardWidth - victory.width}px`;
-        this.board.appendChild(victory);
+    addVictory() {
+        const victoryElement = document.createElement("div");
+        victoryElement.className = "victory";
+        const victory = new InteractionBox( this.boardWidth, this.boardHeight,victoryElement);
+        
+        this.victoryDoor = victory;
+        this.board.appendChild(victoryElement);
     }
     checkPlayerBoxCollisions(){
         this.boxArray.forEach((e) => {
@@ -146,30 +159,91 @@ class Game {
                 this.player.verticalPosition < e.verticalPosition + e.height
                 ){
                     //console.log("player-box-colie")
-
-//if( this.player.horizontalPosition + this.player.width < e.horizontalPosition){//if player is on the left
-
-//}
-                   
-                   if(this.player.verticalPosition === e.verticalPosition +e.height){
+  
+                    const playerCenterX = this.player.horizontalPosition + this.player.width / 2;
+                    const boxCenterX = e.horizontalPosition + e.width / 2;
+        
+                    const playerTopY = this.player.verticalPosition;
+                    const playerBottomY = this.player.verticalPosition + this.player.height;
+                    const boxTopY = e.verticalPosition;
+                    const boxBottomY = e.verticalPosition + e.height;
+        
+                    // Calculate the overlap on each side
+                    const overlapLeft = playerCenterX - boxCenterX - e.width / 2;
+                    const overlapRight = boxCenterX - playerCenterX - this.player.width / 2;
+                    const overlapTop = playerBottomY - boxTopY;
+                    const overlapBottom = boxBottomY - playerTopY;
+        
+                    if (Math.abs(overlapLeft) < Math.min(overlapRight, overlapTop, overlapBottom)) {
+                        // Left side collision
+                        console.log("Left side collision");
+                        this.player.horizontalPosition -= overlapLeft;
+                    } else if (Math.abs(overlapRight) < Math.min(overlapLeft, overlapTop, overlapBottom)) {
+                        // Right side collision
+                        console.log("Right side collision");
+                        this.player.horizontalPosition += overlapRight;
+                    } else if (overlapTop < overlapLeft && overlapTop < overlapRight && overlapTop < overlapBottom) {
+                        // Top side collision
+                        console.log("Top side collision");
+                        this.player.verticalPosition -= overlapTop;
+                    } else {
+                        // Bottom side collision
+                        console.log("Bottom side collision");
+                        this.player.verticalPosition += overlapBottom;
+                    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////777
+                  /* if(this.player.verticalPosition === e.verticalPosition +e.height){
                         console.log("is this working? vertical collies?");
-                        
+
                     this.player.playerElement.style.bottom = `${e.verticalPosition + e.height - this.player.width}px`;
                    }
-                   else  if(this.player.horizontalPosition +
-                    this.player.width >= e.horizontalPosition){
+
+                    if(this.player.horizontalPosition +
+                    this.player.width >= e.horizontalPosition){ //THIS ONE KIND OF WORKS ONLY ON THE LEFT
                         console.log("left-right collie");
                     this.player.playerElement.style.left = `${e.horizontalPosition - this.player.width}px`;
-                   }
+                   }*/
 
 
                 }
 
         });
     }
+    
     changeBackground(){//NOT WORKING
-        if(this.player.horizontalPosition + this.player.width === this.boardWidth){
-            this.board.className = "background2"
+        if(this.player.horizontalPosition + this.player.width/2 > this.boardWidth ){
+            
+            this.level += 1;
+            this.player.horizontalPosition = 0;
+            this.player.playerElement.style.left=`${this.horizontalPosition}px`;
+            console.log(this.level)
+            if(this.level === 2){
+                this.board.className="background2";
+                this.enemyArray.forEach((e) =>{
+                    e.speed += 2;
+                })
+                this.boxArray.forEach((e) =>{
+                    e.boxElement.remove();
+                })
+                this.addBox();
+            }else if(this.level ===3){
+                this.board.className="background3";
+                
+                this.enemyArray.forEach((e) =>{
+                    e.speed = 8;
+                })
+                this.boxArray.forEach((e) =>{
+                    e.boxElement.remove();
+                })
+                this.addBox();
+                this.addBox();
+            }else{
+
+            }
+
+
+
+
         }
     }
 
@@ -177,7 +251,11 @@ class Game {
 
 let game = new Game;
 
-document.addEventListener("keydown", (e) => game.movement(e))
+document.addEventListener("keydown", (e) => {
+    game.movement(e);
+    game.interaction(e);
+
+})
 //we need to make arrowfunction in order to acces things inside objects!!!!
 
 let frames = 0;
@@ -189,17 +267,17 @@ function animate() {
     game.checkPlayerBoxCollisions();
     game.gravity();
     game.moveEnemy();
-    //game.changeBackground();
+    game.changeBackground();
     if (frames === 1) {
         game.addEnemy();
-        game.addVictoryPoint();
+        game.addVictory();
         game.addBox();
     }
     if (frames % 5000 === 0) {
         game.addEnemy();
 
     }
-    if (frames % 1000 === 0) {
+    if (frames % 4000 === 0) {
 
         game.addBox();
     }

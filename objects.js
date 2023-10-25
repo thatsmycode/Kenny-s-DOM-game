@@ -3,8 +3,7 @@ class Player {
         this.horizontalPosition = 0;
         this.verticalPosition = 0;
         this.playerElement = document.querySelector("#player");
-        this.speed = 5;
-        
+        this.speed = 5;      
         this.playerElement.classList.add("player-going-right");
         this.height=30;
         this.width=22;
@@ -17,23 +16,17 @@ class Player {
     move(e){
         if(e.key === "ArrowRight"){
 
-            
-
             this.horizontalPosition += this.speed;
             if(this.horizontalPosition >= this.boardWidth){
                 this.horizontalPosition = 0;
             }
         }else if(e.key === "ArrowLeft"){
-
-            
-
             this.horizontalPosition -= this.speed;  
            
             if(this.horizontalPosition <= 0){
                 this.horizontalPosition = 0;
             }           
-        }
-        
+        }      
         if(e.key === "ArrowUp" ){
             
             this.verticalPosition += 80;
@@ -41,11 +34,8 @@ class Player {
                 this.verticalPosition = this.boardHeight - this.height;
             }
         }
-
         this.playerElement.style.left = `${this.horizontalPosition}px`;
         this.playerElement.style.bottom = `${this.verticalPosition}px`;
-
-        
 
 
     }
@@ -94,8 +84,9 @@ class Block {
                 this.blockElement.classList.remove("swap");
             }
         }
-        
         this.blockElement.style.left=`${this.horizontalPosition}px`;
+
+
     }
 }
 
@@ -109,7 +100,6 @@ class Box {
         this.isFalling = true;
         this.verticalPosition = BoardHeight;
         this.horizontalPosition = Math.floor(Math.random() * (BoardWidth - this.width));
-        
         this.boxElement.style.width=`${this.width}px`;
         this.boxElement.style.height=`${this.height}px`;
         
@@ -133,3 +123,25 @@ class Box {
     }
 }
 
+
+class InteractionBox  {
+    constructor( boardWidth,  boardHeight,element){
+        this.interactionBoxElement = element;
+        this.width=60;
+        this.height=60;
+        this.verticalPosition=( Math.floor(Math.random() * (boardHeight -this.height+1.5)));
+        this.horizontalPosition =  boardWidth -this.width * 1.5;
+        this.interactionBoxElement.style.bottom = `${this.verticalPosition}px`; 
+        this.interactionBoxElement.style.left = `${this.horizontalPosition}px`; 
+        isOpened: false;
+    }
+    open(e){
+        console.log(e.key)
+        if (e.key === " "){
+        console.log("interactionBox opened!");
+        this.isOpened = true;
+        console.log(e.key)
+        }
+        return this.isOpened;
+    }
+}

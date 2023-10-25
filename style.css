@@ -14,30 +14,45 @@ body {
     width: 80vw;
     height: 80vh;
     position: relative;
-    background-size: cover;
     border: 1px solid black;
+    overflow: hidden;
 }
 .background1{
     background-image: url("./img/Dark_Forest_9.jpg");
+    background-size: cover;
+
 }
 .background2{
-    background-image: url("./img/Dark_Forest_9.jpg");
+    background-image: url("./img/Dark_Forest_1.jpg");
+    background-size: cover;
+
 }
+.background3{
+    background-image: url("./img/Background_1.png"),url("./img/Background_0.png");
+    background-size: cover;
+}
+
+    
+    
+    
 #player {
     height: 30px;
     width: 15px;
     position: absolute;
     bottom: 0;
     left: 0;
+    z-index:2;
    
 }
 
 .player-going-right {
-    background-color: red;
+    background-image: url("./img/kenny.png");
+    background-size: cover;
 }
 
 .player-going-left {
-    background-color: green;
+    background-image: url("./img/kenny.png");
+    background-size: cover;
 }
 
 .enemy {
@@ -58,13 +73,14 @@ body {
     transform: scaleX(-1);
 }
 
-.victory-point{
-    height: 60px;
-    width: 60px;
+.victory{
+    height: 80px;
+    width: 80px;
     position: absolute;
+    left: 500px;
+    background-size: cover;
+
     background-image: url("./img/door.png");
-    bottom: 0px;
-    left:90%
 }
 
 
@@ -72,17 +88,26 @@ body {
 .box {
     background-image: url("./img/box.png");
     background-size: cover;
-
     height: 60px;
     width: 60px;
     position: absolute;
-    bottom: 0px;
-    left: 0px;
+    left: -60px;
 
 }
 #info{
     position:absolute;
-    left:45%;
+    left:50%;
     background-color: red;
     
 }
+#level{
+    position: absolute;
+    left:40%;
+    background-color: red;
+}
+
+.you-lose{
+    background-image: url("./img/you-are-dead.jpg");
+    background-size: cover;
+}
+ 
