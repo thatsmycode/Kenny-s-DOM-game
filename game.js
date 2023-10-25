@@ -2,6 +2,7 @@
 const body = document.querySelector("body");
 const info = document.querySelector("#info");
 const levelInfo = document.querySelector("#level");
+const help = document.querySelector("#help");
 
 class Game {
     constructor() {
@@ -23,31 +24,43 @@ class Game {
     movement(e) {
         if (!this.gameStop) {
             this.player.move(e);
-             //intentava cridar aqui lo de cambiar les  classes, per si desde dins el objecte playey (funcio move()) no podia llegirho
-            if(e.key === "ArrowRight"){
+            //intentava cridar aqui lo de cambiar les  classes, per si desde dins el objecte playey (funcio move()) no podia llegirho
+            if (e.key === "ArrowRight") {
                 this.player.playerElement.classList.remove("player-going-left")
                 this.player.playerElement.classList.add("player-going-right")
             }
-            else if (e.key === "ArrowLeft"){
+            else if (e.key === "ArrowLeft") {
                 this.player.playerElement.classList.remove("player-going-right");
                 this.player.playerElement.classList.add("player-going-left");
-            }   
-        }
-    }
-    interaction(e){
-        if (!this.victoryDoor ){
-           if(e.key === " "){
-            console.log("there is nothing to interact with in this level...")
             }
         }
-        else{
+    }
+    interaction(e) {
+        if (!this.victoryDoor) {
+            if (e.key === " ") {
+                console.log("there is nothing to interact with in this level...")
+                help.innerText = "there is nothing to interact with in this level..."
+            }
+            setTimeout(() => {
+                help.innerText = "Good luck Kenny!";
+            }, 2000)
+        }
+        else {
             if (this.player.verticalPosition >= this.victoryDoor.verticalPosition &&
                 this.player.horizontalPosition < this.victoryDoor.horizontalPosition + this.victoryDoor.width &&
-                this.player.horizontalPosition + this.player.width > this.victoryDoor.horizontalPosition&&
+                this.player.horizontalPosition + this.player.width > this.victoryDoor.horizontalPosition &&
                 this.player.verticalPosition < this.victoryDoor.verticalPosition + this.victoryDoor.height
-            ){
-            console.log("you can interact!");
-            this.victoryDoor.open(e)// this returns undefined
+            ) {
+                help.innerText = "Press 'Space' to interact with the door"
+
+                setTimeout(() => {
+                    help.innerText = "Good luck Kenny!";
+                }, 2000)
+                if (this.victoryDoor.open(e)) {
+                    help.innerText = "WELCOME, YOU WON!";
+                }
+
+
             }
         }
     }
@@ -69,25 +82,23 @@ class Game {
             e.move();
         })
     }
-    addBox(){
-        if(!this.stopBox){
+    addBox() {
+        if (!this.stopBox) {
             const newBoxElement = document.createElement("div");
-            newBoxElement.className = "box";   
+            newBoxElement.className = "box";
             const box = new Box(this.boardWidth, this.boardHeight, newBoxElement);
             this.boxArray.push(box);
             this.board.appendChild(newBoxElement)
-        } 
+        }
     }
     checkForCollissions() {
         this.enemyArray.forEach((e) => {
             //BLOCK LATERAL COLLISIONS WITH PLAYER
             if (this.player.verticalPosition < e.height) {//check if player its jumping over it
+
                 if (this.player.horizontalPosition + this.player.width >= e.horizontalPosition
                     && this.player.horizontalPosition <= e.horizontalPosition + e.width) {
-                    /* console.log("player left: ", this.player.horizontalPosition,
-                                 "player right: ", this.player.horizontalPosition + this.player.width,
-                                 "block left: ", e.horizontalPosition,
-                                 "block right: ", e.horizontalPosition + e.width);*/
+
                     this.gameStop = true;
                     this.board.className = ("you-lose");
                 }
@@ -118,24 +129,24 @@ class Game {
             })
         })
     }
-    checkForBoxPile() {   
+    checkForBoxPile() {
         this.boxArray.forEach((b) => {
             if (b.isFalling) {
                 this.floorBoxes.forEach((f) => {
                     if (
                         b.horizontalPosition < f.horizontalPosition + f.width &&
-                        b.horizontalPosition + b.width > f.horizontalPosition){
+                        b.horizontalPosition + b.width > f.horizontalPosition) {
 
                         if (b.verticalPosition < f.verticalPosition + f.height) {
                             b.isFalling = false;
 
                             b.boxElement.style.bottom = `${f.verticalPosition + f.height}px`;
                             this.floorBoxes.push(b)
-                            
+
                             //check when a box is almost touching the vertical limit to stop adding boxes for garanting an upper space to cross them
 
-                            if (b.verticalPosition + b.height >= this.boardHeight - b.height * 2){//this can be a modificable variable inside game 
-                              this.stopBox = true;
+                            if (b.verticalPosition + b.height >= this.boardHeight - b.height * 2) {//this can be a modificable variable inside game 
+                                this.stopBox = true;
                             }
                         }
                     }
@@ -153,109 +164,97 @@ class Game {
     addVictory() {
         const victoryElement = document.createElement("div");
         victoryElement.className = "victory";
-        const victory = new InteractionBox( this.boardWidth, this.boardHeight,victoryElement);
-        
+        const victory = new InteractionBox(this.boardWidth, this.boardHeight, victoryElement);
+
         this.victoryDoor = victory;
         this.board.appendChild(victoryElement);
     }
-    checkPlayerBoxCollisions(){
+    checkPlayerBoxCollisions() {
         this.boxArray.forEach((e) => {
-            if (
-                this.player.horizontalPosition < e.horizontalPosition + e.width &&
-                this.player.horizontalPosition + this.player.width > e.horizontalPosition&&
-                this.player.verticalPosition < e.verticalPosition + e.height
-                ){
-                    //console.log("player-box-colie")
-  
-                    const playerCenterX = this.player.horizontalPosition + this.player.width / 2;
-                    const boxCenterX = e.horizontalPosition + e.width / 2;
-        
-                    const playerTopY = this.player.verticalPosition;
-                    const playerBottomY = this.player.verticalPosition + this.player.height;
-                    const boxTopY = e.verticalPosition;
-                    const boxBottomY = e.verticalPosition + e.height;
-        
-                    // Calculate the overlap on each side
-                    const overlapLeft = playerCenterX - boxCenterX - e.width / 2;
-                    const overlapRight = boxCenterX - playerCenterX - this.player.width / 2;
-                    const overlapTop = playerBottomY - boxTopY;
-                    const overlapBottom = boxBottomY - playerTopY;
-        
-                    if (Math.abs(overlapLeft) < Math.min(overlapRight, overlapTop, overlapBottom)) {
-                        // Left side collision
-                        console.log("Left side collision");
-                        this.player.horizontalPosition -= overlapLeft;
-                    } else if (Math.abs(overlapRight) < Math.min(overlapLeft, overlapTop, overlapBottom)) {
-                        // Right side collision
-                        console.log("Right side collision");
-                        this.player.horizontalPosition += overlapRight;
-                    } else if (overlapTop < overlapLeft && overlapTop < overlapRight && overlapTop < overlapBottom) {
-                        // Top side collision
-                        console.log("Top side collision");
-                        this.player.verticalPosition -= overlapTop;
-                    } else {
-                        // Bottom side collision
-                        console.log("Bottom side collision");
-                        this.player.verticalPosition += overlapBottom;
+            if (this.player.verticalPosition + this.player.height >= e.verticalPosition) { //if i uncoment this, you can go under the boxes, but pilling is messed
+                //we check that we are not under the box
+
+                if (
+                    this.player.horizontalPosition < e.horizontalPosition + e.width &&
+                    this.player.horizontalPosition + this.player.width > e.horizontalPosition &&
+                    this.player.verticalPosition < e.verticalPosition + e.height) {
+                    //we check if there is a collission)
+
+                    console.log(this.player.horizontalPosition, e.horizontalPosition);
+                    if (this.player.horizontalPosition < e.horizontalPosition + e.width &&
+                        this.player.horizontalPosition + this.player.width > e.horizontalPosition) {
+
+                        if (this.player.horizontalPosition <= e.horizontalPosition) {
+                            console.log("we are on the left")
+                            this.player.horizontalPosition = e.horizontalPosition - this.player.width;
+                        }
+                        else if (this.player.horizontalPosition >= e.horizontalPosition) {
+                            console.log("we are on the right")
+                            this.player.horizontalPosition = e.horizontalPosition + e.width;
+                        }
+
+                        console.log("lateral collision ")
                     }
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////777
-                  /* if(this.player.verticalPosition === e.verticalPosition +e.height){
-                        console.log("is this working? vertical collies?");
+                    
 
-                    this.player.playerElement.style.bottom = `${e.verticalPosition + e.height - this.player.width}px`;
-                   }
 
-                    if(this.player.horizontalPosition +
-                    this.player.width >= e.horizontalPosition){ //THIS ONE KIND OF WORKS ONLY ON THE LEFT
-                        console.log("left-right collie");
-                    this.player.playerElement.style.left = `${e.horizontalPosition - this.player.width}px`;
-                   }*/
+                    /*   console.log("player left: ", this.player.horizontalPosition,
+                          "player right: ", this.player.horizontalPosition + this.player.width,
+                          "box left: ", e.horizontalPosition,
+                          "box right: ", e.horizontalPosition + e.width); */
+
 
 
                 }
 
+
+            }
+
         });
     }
-    
-    changeBackground(){//NOT WORKING
-        if(this.player.horizontalPosition + this.player.width/2 > this.boardWidth ){
-            
+
+    changeBackground() {
+        if (this.player.horizontalPosition + this.player.width / 2 > this.boardWidth) {
+
             this.level += 1;
             this.player.horizontalPosition = 0;
-            this.player.playerElement.style.left=`${this.horizontalPosition}px`;
+            this.player.playerElement.style.left = `${this.horizontalPosition}px`;
             console.log(this.level)
-            if(this.level === 2){
+            if (this.level === 2) {
 
 
                 levelInfo.innerText = `LEVEL ${this.level}`;
 
-                this.board.className="background2";
-                this.enemyArray.forEach((e) =>{
+                this.board.className = "background2";
+                this.enemyArray.forEach((e) => {
                     e.speed += 2;
                 })
-                this.boxArray.forEach((e) =>{
+                this.boxArray.forEach((e) => {
                     e.boxElement.remove();
-                   
+
                 })
                 this.boxArray = [];
                 this.addBox();
-            }else if(this.level === 3){
+            } else if (this.level === 3) {
                 levelInfo.innerText = `LEVEL ${this.level}`;
-                this.board.className="background3";
-                
-                this.enemyArray.forEach((e) =>{
+                this.board.className = "background3";
+
+                this.enemyArray.forEach((e) => {
                     e.speed = 8;
                 })
-                
-                this.boxArray.forEach((e) =>{
+
+                this.boxArray.forEach((e) => {
                     e.boxElement.remove();
                 })
                 this.boxArray = [];
                 this.addBox();
-                this.addBox();
-                game.addVictory();
-            }else{
 
+                game.addVictory();
+                this.addBox();
+
+                //add right side limit?
+            } else {
+                //add epilectic background?
             }
 
 
@@ -279,21 +278,21 @@ let frames = 0;
 
 function animate() {
     frames++;
-    game.checkForBoxPile(); 
+    game.checkForBoxPile();
     game.checkForCollissions();
     game.checkPlayerBoxCollisions();
     game.gravity();
     game.moveEnemy();
     game.changeBackground();
     if (frames === 1) {
-        game.addEnemy();
+        //game.addEnemy();
         game.addBox();
     }
     if (frames % 5000 === 0) {
-        game.addEnemy();
+        //game.addEnemy();
 
     }
-    if (frames % 4000 === 0) {
+    if (frames % 100 === 0) {
 
         game.addBox();
     }

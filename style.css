@@ -8,6 +8,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    display: flex;
+    flex-direction: column ;
+
 }
 
 #board {
@@ -110,4 +114,6 @@ body {
     background-image: url("./img/you-are-dead.jpg");
     background-size: cover;
 }
- 
+#help{
+   
+}
