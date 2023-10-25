@@ -224,17 +224,21 @@ class Game {
                 })
                 this.boxArray.forEach((e) =>{
                     e.boxElement.remove();
+                   
                 })
+                this.boxArray = [];
                 this.addBox();
-            }else if(this.level ===3){
+            }else if(this.level === 3){
                 this.board.className="background3";
                 
                 this.enemyArray.forEach((e) =>{
                     e.speed = 8;
                 })
+                
                 this.boxArray.forEach((e) =>{
                     e.boxElement.remove();
                 })
+                this.boxArray = [];
                 this.addBox();
                 this.addBox();
             }else{
