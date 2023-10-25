@@ -1,7 +1,7 @@
 
 const body = document.querySelector("body");
 const info = document.querySelector("#info");
-
+const levelInfo = document.querySelector("#levelInfo");
 
 class Game {
     constructor() {
@@ -35,15 +35,20 @@ class Game {
         }
     }
     interaction(e){
-        if (this.player.verticalPosition >= this.victoryDoor.verticalPosition &&
-            this.player.horizontalPosition < this.victoryDoor.horizontalPosition + this.victoryDoor.width &&
-            this.player.horizontalPosition + this.player.width > this.victoryDoor.horizontalPosition&&
-            this.player.verticalPosition < this.victoryDoor.verticalPosition + this.victoryDoor.height
+        if (!this.victoryDoor){
+            console.log("there is nothing to interact with in this level...")
+        }
+        else{
+            if (this.player.verticalPosition >= this.victoryDoor.verticalPosition &&
+                this.player.horizontalPosition < this.victoryDoor.horizontalPosition + this.victoryDoor.width &&
+                this.player.horizontalPosition + this.player.width > this.victoryDoor.horizontalPosition&&
+                this.player.verticalPosition < this.victoryDoor.verticalPosition + this.victoryDoor.height
             ){
             console.log("you can interact!");
-                    this.victoryDoor.open(e)// this returns undefined
+            this.victoryDoor.open(e)// this returns undefined
+            }
+        }
     }
-}
     gravity() {
         this.player.fall();
         this.boxArray.forEach((e) => {
@@ -218,6 +223,10 @@ class Game {
             this.player.playerElement.style.left=`${this.horizontalPosition}px`;
             console.log(this.level)
             if(this.level === 2){
+
+
+                levelInfo.innerText = `LEVEL ${this.level}`;
+
                 this.board.className="background2";
                 this.enemyArray.forEach((e) =>{
                     e.speed += 2;
@@ -229,6 +238,7 @@ class Game {
                 this.boxArray = [];
                 this.addBox();
             }else if(this.level === 3){
+                levelInfo.innerText = `LEVEL ${this.level}`;
                 this.board.className="background3";
                 
                 this.enemyArray.forEach((e) =>{
@@ -241,6 +251,7 @@ class Game {
                 this.boxArray = [];
                 this.addBox();
                 this.addBox();
+                game.addVictory();
             }else{
 
             }
@@ -274,7 +285,6 @@ function animate() {
     game.changeBackground();
     if (frames === 1) {
         game.addEnemy();
-        game.addVictory();
         game.addBox();
     }
     if (frames % 5000 === 0) {
