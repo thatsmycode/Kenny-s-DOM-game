@@ -3,6 +3,8 @@ const body = document.querySelector("body");
 const info = document.querySelector("#info");
 const levelInfo = document.querySelector("#level");
 const help = document.querySelector("#help");
+const restart = document.querySelector("#restart");
+const exit = document.querySelector("#exit");
 
 class Game {
     constructor() {
@@ -52,7 +54,7 @@ class Game {
             ) {
                 
 
-                help.innerText = "Press 'Space' to interact with the door"
+                help.innerText = "Press 'Space' to open the door"
                     
 
                 setTimeout(() => {
@@ -60,12 +62,12 @@ class Game {
                 }, 1000)
 
                 if (this.victoryDoor.open(e)) {
-                    help.innerText = "WELCOME, YOU WON!";
+                    setTimeout(()=>{
+                        help.innerText = "WELCOME, YOU WON!";
+                    },500)
                     this.gameStop = true;
                     this.board.className = "end";
                 }
-
-
             }
         }
     }
@@ -103,6 +105,7 @@ class Game {
 
                 if (this.player.horizontalPosition + this.player.width >= e.horizontalPosition
                     && this.player.horizontalPosition <= e.horizontalPosition + e.width) {
+
 
                     this.gameStop = true;
                     this.board.className = ("you-lose");
@@ -279,11 +282,7 @@ class Game {
 
 let game = new Game;
 
-document.addEventListener("keydown", (e) => {
-    game.movement(e);
-    game.interaction(e);
 
-})
 //we need to make arrowfunction in order to acces things inside objects!!!!
 
 let frames = 0;
@@ -297,7 +296,7 @@ function animate() {
     game.moveEnemy();
     game.changeBackground();
     if (frames === 1) {
-        //game.addEnemy();
+        game.addEnemy();
         game.addBox();
     }
     if (frames % 5000 === 0) {
@@ -307,24 +306,25 @@ function animate() {
         game.addBox();
     }
 
-
     if (!game.gameStop) {
         animationId = requestAnimationFrame(animate);
     }else{
-        game.boxArray.forEach((e) => {
-            e.boxElement.remove();
-        })
-        game.boxArray = [];
-        game.enemyArray.forEach((e) => {
-            e.blockElement.remove();
-        })
-        game.boxArray = [];
-        game.player.playerElement.remove();
-        game.victoryDoor.interactionBoxElement.remove();
-        info.remove();
-        levelInfo.remove();
+            
     }
-
-
 }
 animate();
+
+
+restart.addEventListener("click", ()=>{
+    location.reload()
+})
+
+exit.addEventListener("click", () => {
+    window.stop();
+    console.log(exit)
+});
+document.addEventListener("keydown", (e) => {
+    game.movement(e);
+    game.interaction(e);
+
+})
