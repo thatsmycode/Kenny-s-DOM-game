@@ -114,6 +114,13 @@ body {
     background-image: url("./img/you-are-dead.jpg");
     background-size: cover;
 }
+.end{
+  
+    background-image: url("./img/heaven2.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position:  center;
+}
 #help{
    
 }

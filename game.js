@@ -38,8 +38,8 @@ class Game {
     interaction(e) {
         if (!this.victoryDoor) {
             if (e.key === " ") {
-                console.log("there is nothing to interact with in this level...")
-                help.innerText = "there is nothing to interact with in this level..."
+                console.log("There is nothing to interact with in this level...")
+                help.innerText = "There is nothing to interact with in this level..."
             }
             setTimeout(() => {
                 help.innerText = "Good luck Kenny!";
@@ -51,13 +51,19 @@ class Game {
                 this.player.horizontalPosition + this.player.width > this.victoryDoor.horizontalPosition &&
                 this.player.verticalPosition < this.victoryDoor.verticalPosition + this.victoryDoor.height
             ) {
+                
+
                 help.innerText = "Press 'Space' to interact with the door"
+                    
 
                 setTimeout(() => {
                     help.innerText = "Good luck Kenny!";
-                }, 2000)
+                }, 1000)
+
                 if (this.victoryDoor.open(e)) {
                     help.innerText = "WELCOME, YOU WON!";
+                    this.gameStop = true;
+                    this.board.className = "end";
                 }
 
 
@@ -171,7 +177,7 @@ class Game {
     }
     checkPlayerBoxCollisions() {
         this.boxArray.forEach((e) => {
-            if (this.player.verticalPosition + this.player.height >= e.verticalPosition) { //if i uncoment this, you can go under the boxes, but pilling is messed
+            if (this.player.verticalPosition + this.player.height > e.verticalPosition) { //if i uncoment this, you can go under the boxes, but pilling is messed
                 //we check that we are not under the box
 
                 if (
@@ -179,36 +185,45 @@ class Game {
                     this.player.horizontalPosition + this.player.width > e.horizontalPosition &&
                     this.player.verticalPosition < e.verticalPosition + e.height) {
                     //we check if there is a collission)
-
-                    console.log(this.player.horizontalPosition, e.horizontalPosition);
+                          
                     if (this.player.horizontalPosition < e.horizontalPosition + e.width &&
                         this.player.horizontalPosition + this.player.width > e.horizontalPosition) {
-
+                            console.log("lateral collision:");
+                            
                         if (this.player.horizontalPosition <= e.horizontalPosition) {
-                            console.log("we are on the left")
+                            console.log("we are on the left"),
                             this.player.horizontalPosition = e.horizontalPosition - this.player.width;
                         }
                         else if (this.player.horizontalPosition >= e.horizontalPosition) {
-                            console.log("we are on the right")
+                            console.log("we are on the right");
                             this.player.horizontalPosition = e.horizontalPosition + e.width;
                         }
-
-                        console.log("lateral collision ")
                     }
-                    
-
-
-                    /*   console.log("player left: ", this.player.horizontalPosition,
-                          "player right: ", this.player.horizontalPosition + this.player.width,
-                          "box left: ", e.horizontalPosition,
-                          "box right: ", e.horizontalPosition + e.width); */
-
-
-
+                  
                 }
-
-
             }
+            /*
+            //if we are under it..
+            if ( this.player.verticalPosition + this.player.height === e.verticalPosition &&
+
+                this.player.horizontalPosition < e.horizontalPosition + e.width &&
+                this.player.horizontalPosition + this.player.width > e.horizontalPosition 
+                ) {
+                    console.log("--------------------------------------------")
+
+                    this.player.verticalPosition = e.verticalPosition - this.player.height;
+                    console.log("we are on under")
+
+
+
+                    if ( this.player.verticalPosition === e.verticalPosition +e.height){
+                    console.log("we are on top")
+                    this.player.verticalPosition = e.verticalPosition +e.height;
+                }
+            }
+
+*/
+
 
         });
     }
@@ -219,13 +234,13 @@ class Game {
             this.level += 1;
             this.player.horizontalPosition = 0;
             this.player.playerElement.style.left = `${this.horizontalPosition}px`;
-            console.log(this.level)
+
+
             if (this.level === 2) {
 
-
                 levelInfo.innerText = `LEVEL ${this.level}`;
-
                 this.board.className = "background2";
+
                 this.enemyArray.forEach((e) => {
                     e.speed += 2;
                 })
@@ -234,7 +249,9 @@ class Game {
 
                 })
                 this.boxArray = [];
+                this.floorBoxes = [];
                 this.addBox();
+
             } else if (this.level === 3) {
                 levelInfo.innerText = `LEVEL ${this.level}`;
                 this.board.className = "background3";
@@ -247,8 +264,8 @@ class Game {
                     e.boxElement.remove();
                 })
                 this.boxArray = [];
+                this.floorBoxes = [];
                 this.addBox();
-
                 game.addVictory();
                 this.addBox();
 
@@ -256,10 +273,6 @@ class Game {
             } else {
                 //add epilectic background?
             }
-
-
-
-
         }
     }
 
@@ -289,17 +302,28 @@ function animate() {
         game.addBox();
     }
     if (frames % 5000 === 0) {
-        //game.addEnemy();
-
+        game.addEnemy();
     }
     if (frames % 100 === 0) {
-
         game.addBox();
     }
 
 
     if (!game.gameStop) {
         animationId = requestAnimationFrame(animate);
+    }else{
+        game.boxArray.forEach((e) => {
+            e.boxElement.remove();
+        })
+        game.boxArray = [];
+        game.enemyArray.forEach((e) => {
+            e.blockElement.remove();
+        })
+        game.boxArray = [];
+        game.player.playerElement.remove();
+        game.victoryDoor.interactionBoxElement.remove();
+        info.remove();
+        levelInfo.remove();
     }
 
 

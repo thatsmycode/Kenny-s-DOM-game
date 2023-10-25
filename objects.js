@@ -29,7 +29,7 @@ class Player {
         }      
         if(e.key === "ArrowUp" ){
             
-            this.verticalPosition += 80;
+            this.verticalPosition += 70;
             if(this.verticalPosition + this.height >= this.boardHeight){ //until the roof ?
                 this.verticalPosition = this.boardHeight - this.height;
             }
@@ -140,7 +140,7 @@ class InteractionBox  {
         if (e.key === " "){
         console.log("interactionBox opened!");
         this.isOpened = true;
-        console.log(e.key)
+        confetti();
         }
         return this.isOpened;
     }
