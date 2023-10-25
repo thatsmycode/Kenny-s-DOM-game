@@ -5,7 +5,8 @@ const levelInfo = document.querySelector("#level");
 const help = document.querySelector("#help");
 const restart = document.querySelector("#restart");
 const exit = document.querySelector("#exit");
-
+const killSound = document.querySelector("#effect");
+const music = document.querySelector("#music");
 class Game {
     constructor() {
         this.board = document.querySelector("#board");
@@ -52,19 +53,19 @@ class Game {
                 this.player.horizontalPosition + this.player.width > this.victoryDoor.horizontalPosition &&
                 this.player.verticalPosition < this.victoryDoor.verticalPosition + this.victoryDoor.height
             ) {
-                
+
 
                 help.innerText = "Press 'Space' to open the door"
-                    
+
 
                 setTimeout(() => {
                     help.innerText = "Good luck Kenny!";
                 }, 1000)
 
                 if (this.victoryDoor.open(e)) {
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         help.innerText = "WELCOME, YOU WON!";
-                    },500)
+                    }, 500)
                     this.gameStop = true;
                     this.board.className = "end";
                 }
@@ -80,7 +81,16 @@ class Game {
     addEnemy() {
         const newElement = document.createElement("div");
         newElement.className = "enemy";
-        const enemy = new Block(this.boardWidth, this.boardHeight, newElement);
+        let enemy;
+        if (this.level === 1) {
+            enemy = new Block(this.boardWidth, this.boardHeight, newElement, 1);
+        }
+        else if (this.level === 2) {
+            enemy = new Block(this.boardWidth, this.boardHeight, newElement, 3);
+        }
+        else if(this.level === 2) {
+            enemy = new Block(this.boardWidth, this.boardHeight, newElement, 5);
+        }
         this.enemyArray.push(enemy);
         this.board.appendChild(newElement);
     }
@@ -106,7 +116,7 @@ class Game {
                 if (this.player.horizontalPosition + this.player.width >= e.horizontalPosition
                     && this.player.horizontalPosition <= e.horizontalPosition + e.width) {
 
-
+                    music.src= "./sound/Cursed Forest Soundscape.wav";
                     this.gameStop = true;
                     this.board.className = ("you-lose");
                 }
@@ -115,7 +125,7 @@ class Game {
             if (this.player.verticalPosition === e.height) {
                 if (this.player.horizontalPosition + this.player.width >= e.horizontalPosition
                     && this.player.horizontalPosition <= e.horizontalPosition + e.width) {
-
+                    killSound.play();
                     console.log("enemy killed");
                     this.removeEnemy(this.enemyArray.indexOf(e));
                 }
@@ -179,7 +189,7 @@ class Game {
     }
     checkPlayerBoxCollisions() {
         this.boxArray.forEach((e) => {
-            if (this.player.verticalPosition + this.player.height > e.verticalPosition) { //if i uncoment this, you can go under the boxes, but pilling is messed
+            if (this.player.verticalPosition + this.player.height > e.verticalPosition) {
                 //we check that we are not under the box
 
                 if (
@@ -187,29 +197,29 @@ class Game {
                     this.player.horizontalPosition + this.player.width > e.horizontalPosition &&
                     this.player.verticalPosition < e.verticalPosition + e.height) {
                     //we check if there is a collission)
-                          
+
                     if (this.player.horizontalPosition < e.horizontalPosition + e.width &&
                         this.player.horizontalPosition + this.player.width > e.horizontalPosition) {
-                            console.log("lateral collision:");
-                            
+                        console.log("lateral collision:");
+
                         if (this.player.horizontalPosition <= e.horizontalPosition) {
                             console.log("we are on the left"),
-                            this.player.horizontalPosition = e.horizontalPosition - this.player.width;
+                                this.player.horizontalPosition = e.horizontalPosition - this.player.width;
                         }
                         else if (this.player.horizontalPosition >= e.horizontalPosition) {
                             console.log("we are on the right");
                             this.player.horizontalPosition = e.horizontalPosition + e.width;
                         }
                     }
-                  
-                }
-            }
-            /*
-            //if we are under it..
-            if ( this.player.verticalPosition + this.player.height === e.verticalPosition &&
 
-                this.player.horizontalPosition < e.horizontalPosition + e.width &&
-                this.player.horizontalPosition + this.player.width > e.horizontalPosition 
+                }
+
+
+                //if we are under it..
+                if (this.player.verticalPosition + this.player.height === e.verticalPosition &&
+
+                    this.player.horizontalPosition < e.horizontalPosition + e.width &&
+                    this.player.horizontalPosition + this.player.width > e.horizontalPosition
                 ) {
                     console.log("--------------------------------------------")
 
@@ -218,13 +228,13 @@ class Game {
 
 
 
-                    if ( this.player.verticalPosition === e.verticalPosition +e.height){
-                    console.log("we are on top")
-                    this.player.verticalPosition = e.verticalPosition +e.height;
+                    if (this.player.verticalPosition === e.verticalPosition + e.height) {
+                        console.log("we are on top")
+                        this.player.verticalPosition = e.verticalPosition + e.height;
+                    }
                 }
-            }
 
-*/
+            }
 
 
         });
@@ -243,9 +253,7 @@ class Game {
                 levelInfo.innerText = `LEVEL ${this.level}`;
                 this.board.className = "background2";
 
-                this.enemyArray.forEach((e) => {
-                    e.speed += 2;
-                })
+                
                 this.boxArray.forEach((e) => {
                     e.boxElement.remove();
 
@@ -257,11 +265,7 @@ class Game {
             } else if (this.level === 3) {
                 levelInfo.innerText = `LEVEL ${this.level}`;
                 this.board.className = "background3";
-
-                this.enemyArray.forEach((e) => {
-                    e.speed = 8;
-                })
-
+               
                 this.boxArray.forEach((e) => {
                     e.boxElement.remove();
                 })
@@ -282,8 +286,40 @@ class Game {
 
 let game = new Game;
 
+setTimeout(() => {
+    help.innerText = "4";
+}, 1000)
+setTimeout(() => {
+    help.innerText = "3";
+}, 2000)
+setTimeout(() => {
+    help.innerText = "2";
+}, 3000)
+setTimeout(() => {
+    help.innerText = "1";
+}, 3900)
+setTimeout(() => {
+    help.innerText = "Good luck Kenny!";
+}, 4400)
 
-//we need to make arrowfunction in order to acces things inside objects!!!!
+const activateEventListener = () => {
+    document.addEventListener("keydown", (e) => {
+        game.movement(e);
+        game.interaction(e);
+    })
+    //we need to make arrowfunction in order to acces things inside objects!!!!
+
+}
+setTimeout(activateEventListener, 4500)
+
+restart.addEventListener("click", () => {
+    location.reload()
+})
+
+exit.addEventListener("click", () => {
+    close();
+});
+
 
 let frames = 0;
 
@@ -296,35 +332,39 @@ function animate() {
     game.moveEnemy();
     game.changeBackground();
     if (frames === 1) {
-        game.addEnemy();
+        //game.addEnemy();
         game.addBox();
     }
-    if (frames % 5000 === 0) {
-        game.addEnemy();
+    if (frames % 400 === 0) {
+        //game.addEnemy();
     }
-    if (frames % 100 === 0) {
+    if (frames % 900 === 0) {
         game.addBox();
     }
+    if (game.level === 2) {
 
+        if (frames % 500 === 0) {
+            game.addEnemy();
+        }
+        if (frames % 700 === 0) {
+           
+            game.addBox();
+        }
+    }
+    else if (game.level === 3) {
+        if (frames % 5000 === 0) {
+            game.addEnemy();
+        }
+        if (frames % 100 === 0) {
+            game.addBox();
+        }
+    }
     if (!game.gameStop) {
         animationId = requestAnimationFrame(animate);
-    }else{
-            
+    } else {
+
     }
 }
 animate();
 
 
-restart.addEventListener("click", ()=>{
-    location.reload()
-})
-
-exit.addEventListener("click", () => {
-    window.stop();
-    console.log(exit)
-});
-document.addEventListener("keydown", (e) => {
-    game.movement(e);
-    game.interaction(e);
-
-})

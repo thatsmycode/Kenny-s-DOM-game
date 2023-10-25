@@ -3,7 +3,7 @@ class Player {
         this.horizontalPosition = 0;
         this.verticalPosition = 0;
         this.playerElement = document.querySelector("#player");
-        this.speed = 5;      
+        this.speed = 4;      
         this.playerElement.classList.add("player-going-right");
         this.height=30;
         this.width=22;
@@ -11,14 +11,15 @@ class Player {
         this.playerElement.style.width = `${this.width}px`;
         this.boardWidth = BoardWidth;
         this.boardHeight = BoardHeight;
-
+        this.canJump= true;
+        this.jumps = 0;
     }
     move(e){
         if(e.key === "ArrowRight"){
 
             this.horizontalPosition += this.speed;
             if(this.horizontalPosition >= this.boardWidth){
-                this.horizontalPosition = 0;
+                this.horizontalPosition = 0;//0;
             }
         }else if(e.key === "ArrowLeft"){
             this.horizontalPosition -= this.speed;  
@@ -28,11 +29,22 @@ class Player {
             }           
         }      
         if(e.key === "ArrowUp" ){
-            
-            this.verticalPosition += 70;
-            if(this.verticalPosition + this.height >= this.boardHeight){ //until the roof ?
-                this.verticalPosition = this.boardHeight - this.height;
+            if(this.canJump){
+                console.log(this.jumps++);
+                this.verticalPosition += 70;
+                if(this.verticalPosition + this.height >= this.boardHeight){  
+                    this.verticalPosition = this.boardHeight - this.height;
+                }
+            if (this.jumps === 3){
+                this.canJump = false;
+                this.jumps= 0;
+                setTimeout(()=>{
+                    this.canJump = true;
+                    
+                },800)
             }
+            }   
+
         }
         this.playerElement.style.left = `${this.horizontalPosition}px`;
         this.playerElement.style.bottom = `${this.verticalPosition}px`;
@@ -52,12 +64,12 @@ class Player {
 }
 
 class Block {
-    constructor(BoardWidth, BoardHeight, element){   
+    constructor(BoardWidth, BoardHeight, element, speed){   
         this.width=32;
         this.height=30;
         this.verticalPosition = 0;
         this.horizontalPosition = BoardWidth - this.width;
-        this.speed = 1;
+        this.speed = speed;
         this.direction = "left";
         this.blockElement = element;
         this.boardWidth = BoardWidth;
@@ -102,6 +114,7 @@ class Box {
         this.horizontalPosition = Math.floor(Math.random() * (BoardWidth - this.width));
         this.boxElement.style.width=`${this.width}px`;
         this.boxElement.style.height=`${this.height}px`;
+        
         
     }
 
