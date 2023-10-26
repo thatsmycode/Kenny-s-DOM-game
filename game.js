@@ -7,6 +7,7 @@ const restart = document.querySelector("#restart");
 const exit = document.querySelector("#exit");
 const killSound = document.querySelector("#effect");
 const music = document.querySelector("#music");
+const trumpets = document.querySelector("#trumpets");
 
 class Game {
     constructor() {
@@ -63,12 +64,24 @@ class Game {
 
                 setTimeout(() => {
                     help.innerText = "Good luck Kenny!";
-                }, 1000)
+                }, 500)
 
                 if (this.victoryDoor.open(e)) {
+                    music.pause();
+                    trumpets.play();
+                    this.boxArray.forEach((e) => {
+                        e.boxElement.remove();
+                    })
+                    this.enemyArray.forEach((e)=>{
+                        e.blockElement.remove();
+                    })
+                    this.player.playerElement.remove();
+                    this.boxArray = [];
+                    this.floorBoxes = [];
+                    this.enemyArray = [];
                     setTimeout(() => {
                         help.innerText = "WELCOME, YOU WON!";
-                    }, 500)
+                    }, 900)
                     this.gameStop = true;
                     this.board.className = "end";
                 }
@@ -196,8 +209,8 @@ class Game {
     checkPlayerBoxCollisions() {
         this.boxArray.forEach((e) => {
 
-            if (this.player.verticalPosition > e.verticalPosition + e.height &&
-                this.player.verticalPosition < e.verticalPosition + e.height + 3) {
+            if (this.player.verticalPosition >= e.verticalPosition + e.height &&
+                this.player.verticalPosition <= e.verticalPosition + e.height + 3) {
 
                 console.log(this.player.verticalPosition, "posicio inicial")
                 console.log(e.horizontalPosition, "box-left")
@@ -211,10 +224,15 @@ class Game {
 
                     console.log(this.player.verticalPosition, "posicio modificada")
 
-                } 
-               
-
-            }else if(this.player.verticalPosition === e.verticalPosition + e.height){
+                }else{
+                    console.log("where am I?");
+                    this.player.isGrounded=false;
+                }
+                
+                
+            }
+            
+            /* else if(this.player.verticalPosition === e.verticalPosition + e.height){
                 
                 if (this.player.horizontalPosition > e.horizontalPosition + e.width ||
                     this.player.horizontalPosition + this.player.width < e.horizontalPosition) {
@@ -224,7 +242,7 @@ class Game {
                         
                         this.player.isGrounded=false;
                     }
-            }
+            } */
 
 
             if (this.player.verticalPosition + this.player.height > e.verticalPosition) {
@@ -352,10 +370,10 @@ function animate() {
         
     }
     if (frames % 400 === 0) {
-        //game.addEnemy();
+        game.addEnemy();
         
     }
-    else if (frames % 900 === 0) {
+    else if (frames % 1100 === 0) {
         game.addBox();
     }
     if (game.level === 2) {
