@@ -19,7 +19,7 @@ class Player {
 
             this.horizontalPosition += this.speed;
             if(this.horizontalPosition >= this.boardWidth){
-                this.horizontalPosition = 0;//0;
+                this.horizontalPosition =  0;
             }
         }else if(e.key === "ArrowLeft"){
             this.horizontalPosition -= this.speed;  

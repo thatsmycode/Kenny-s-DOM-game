@@ -88,7 +88,7 @@ class Game {
         else if (this.level === 2) {
             enemy = new Block(this.boardWidth, this.boardHeight, newElement, 3);
         }
-        else if(this.level === 2) {
+        else if (this.level === 2) {
             enemy = new Block(this.boardWidth, this.boardHeight, newElement, 5);
         }
         this.enemyArray.push(enemy);
@@ -116,7 +116,7 @@ class Game {
                 if (this.player.horizontalPosition + this.player.width >= e.horizontalPosition
                     && this.player.horizontalPosition <= e.horizontalPosition + e.width) {
 
-                    music.src= "./sound/Cursed Forest Soundscape.wav";
+                    music.src = "./sound/Cursed Forest Soundscape.wav";
                     this.gameStop = true;
                     this.board.className = ("you-lose");
                 }
@@ -189,6 +189,24 @@ class Game {
     }
     checkPlayerBoxCollisions() {
         this.boxArray.forEach((e) => {
+
+            if (this.player.verticalPosition > e.verticalPosition+ e.height &&
+                this.player.verticalPosition < e.verticalPosition+ e.height + 5) {
+
+                    console.log(this.player.verticalPosition,"posicio inicial")
+                if (
+                    this.player.horizontalPosition < e.horizontalPosition + e.width &&
+                    this.player.horizontalPosition + this.player.width > e.horizontalPosition) {
+
+                        this.player.verticalPosition = e. verticalPosition + e.height;
+                        console.log(this.player.verticalPosition,"posicio modificada")
+                        this.playerElement.style.bottom = `${this.player.verticalPosition}px`;// AL COMENTAR LA LINEA (QUE TE LERROR) DEIXA DANAR EL TOP
+
+                        //this.player.playerElement.style.bottom = `${e. verticalPosition + e.height}px`;//INTENTO FER LOK ADALT PERO NO VA
+                }
+            }
+
+
             if (this.player.verticalPosition + this.player.height > e.verticalPosition) {
                 //we check that we are not under the box
 
@@ -214,29 +232,7 @@ class Game {
 
                 }
 
-
-                //if we are under it..
-                if (this.player.verticalPosition + this.player.height === e.verticalPosition &&
-
-                    this.player.horizontalPosition < e.horizontalPosition + e.width &&
-                    this.player.horizontalPosition + this.player.width > e.horizontalPosition
-                ) {
-                    console.log("--------------------------------------------")
-
-                    this.player.verticalPosition = e.verticalPosition - this.player.height;
-                    console.log("we are on under")
-
-
-
-                    if (this.player.verticalPosition === e.verticalPosition + e.height) {
-                        console.log("we are on top")
-                        this.player.verticalPosition = e.verticalPosition + e.height;
-                    }
-                }
-
             }
-
-
         });
     }
 
@@ -253,7 +249,7 @@ class Game {
                 levelInfo.innerText = `LEVEL ${this.level}`;
                 this.board.className = "background2";
 
-                
+
                 this.boxArray.forEach((e) => {
                     e.boxElement.remove();
 
@@ -265,7 +261,7 @@ class Game {
             } else if (this.level === 3) {
                 levelInfo.innerText = `LEVEL ${this.level}`;
                 this.board.className = "background3";
-               
+
                 this.boxArray.forEach((e) => {
                     e.boxElement.remove();
                 })
@@ -332,11 +328,11 @@ function animate() {
     game.moveEnemy();
     game.changeBackground();
     if (frames === 1) {
-        //game.addEnemy();
+        game.addEnemy();
         game.addBox();
     }
     if (frames % 400 === 0) {
-        //game.addEnemy();
+        game.addEnemy();
     }
     if (frames % 900 === 0) {
         game.addBox();
@@ -347,7 +343,7 @@ function animate() {
             game.addEnemy();
         }
         if (frames % 700 === 0) {
-           
+
             game.addBox();
         }
     }
