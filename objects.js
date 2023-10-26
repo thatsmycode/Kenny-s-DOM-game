@@ -32,8 +32,9 @@ class Player {
         if(e.key === "ArrowUp" ){
             if(this.canJump){
                 console.log(this.jumps++);
+                
                 this.verticalPosition += 70;
-this.isGrounded = false;
+                this.isGrounded = false;
 
                 if(this.verticalPosition + this.height >= this.boardHeight){  
                     this.verticalPosition = this.boardHeight - this.height;

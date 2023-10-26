@@ -212,15 +212,15 @@ class Game {
                     console.log(this.player.verticalPosition, "posicio modificada")
 
                 } 
-                /*if (!this.player.horizontalPosition < e.horizontalPosition + e.width &&
-                    this.player.horizontalPosition + this.player.width > e.horizontalPosition) {
-
-                    }*/
+               
 
             }else if(this.player.verticalPosition === e.verticalPosition + e.height){
                 
                 if (this.player.horizontalPosition > e.horizontalPosition + e.width ||
                     this.player.horizontalPosition + this.player.width < e.horizontalPosition) {
+
+                        console.log(this.player.horizontalPosition, "player left")
+                        console.log(this.player.horizontalPosition + this.player.width, "player right")
                         
                         this.player.isGrounded=false;
                     }
@@ -346,38 +346,39 @@ function animate() {
     game.moveEnemy();
     game.changeBackground();
     if (frames === 1) {
-        game.addEnemy();
+       // game.addEnemy();
         game.addBox();
+       
+        
     }
     if (frames % 400 === 0) {
-        // game.addEnemy();
+        //game.addEnemy();
+        
     }
-    if (frames % 900 === 0) {
-        // game.addBox();
+    else if (frames % 900 === 0) {
+        game.addBox();
     }
     if (game.level === 2) {
 
         if (frames % 500 === 0) {
-            //game.addEnemy();
+            game.addEnemy();
         }
-        if (frames % 700 === 0) {
+        else if (frames % 700 === 0) {
 
-            //game.addBox();
+            game.addBox();
         }
     }
     else if (game.level === 3) {
         if (frames % 500 === 0) {
             game.addEnemy();
         }
-        if (frames % 100 === 0) {
+        else if (frames % 100 === 0) {
             game.addBox();
         }
     }
     if (!game.gameStop) {
         animationId = requestAnimationFrame(animate);
-    } else {
-
-    }
+    } 
 }
 animate();
 
