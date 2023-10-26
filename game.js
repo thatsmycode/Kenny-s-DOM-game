@@ -137,6 +137,16 @@ class Game {
                         music.src = "./sound/Cursed Forest Soundscape.wav";
                         this.gameStop = true;
                         this.board.className = ("you-lose");
+                        this.boxArray.forEach((z)=>{
+                            z.boxElement.remove();
+                        })
+                        this.enemyArray.forEach((y)=>{
+                            y.blockElement.remove();
+                        })
+                        this.player.playerElement.remove();
+                        this.enemyArray= [];
+                        this.boxArray = [];
+                        this.floorBoxes = [];
                     }
                 }
                 //BlOCK VERTICAL COLLISIONS WITH PLAYER
@@ -212,9 +222,7 @@ class Game {
             if (this.player.verticalPosition >= e.verticalPosition + e.height &&
                 this.player.verticalPosition <= e.verticalPosition + e.height + 3) {
 
-                console.log(this.player.verticalPosition, "posicio inicial")
-                console.log(e.horizontalPosition, "box-left")
-                console.log( e.horizontalPosition + e.width, "box-right")
+                
                 if (
                     this.player.horizontalPosition < e.horizontalPosition + e.width &&
                     this.player.horizontalPosition + this.player.width > e.horizontalPosition) {
@@ -225,7 +233,7 @@ class Game {
                     console.log(this.player.verticalPosition, "posicio modificada")
 
                 }else{
-                    console.log("where am I?");
+                    
                     this.player.isGrounded=false;
                 }
                 
@@ -305,7 +313,6 @@ class Game {
                 })
                 this.boxArray = [];
                 this.floorBoxes = [];
-                this.addBox();
                 game.addVictory();
                 this.addBox();
 
