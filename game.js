@@ -113,10 +113,7 @@ class Game {
     }
     checkForCollissions() {
         if (this.enemyArray.length > 0) {
-            console.log(this.enemyArray)
-
             this.enemyArray.forEach((e) => {
-                console.log(e)
 
                 //BLOCK LATERAL COLLISIONS WITH PLAYER
                 if (this.player.verticalPosition < e.height) {//check if player its jumping over it
@@ -203,6 +200,8 @@ class Game {
                 this.player.verticalPosition < e.verticalPosition + e.height + 3) {
 
                 console.log(this.player.verticalPosition, "posicio inicial")
+                console.log(e.horizontalPosition, "box-left")
+                console.log( e.horizontalPosition + e.width, "box-right")
                 if (
                     this.player.horizontalPosition < e.horizontalPosition + e.width &&
                     this.player.horizontalPosition + this.player.width > e.horizontalPosition) {
@@ -212,10 +211,19 @@ class Game {
 
                     console.log(this.player.verticalPosition, "posicio modificada")
 
-                } else if (this.player.horizontalPosition > e.horizontalPosition + e.width &&
+                } 
+                /*if (!this.player.horizontalPosition < e.horizontalPosition + e.width &&
+                    this.player.horizontalPosition + this.player.width > e.horizontalPosition) {
+
+                    }*/
+
+            }else if(this.player.verticalPosition === e.verticalPosition + e.height){
+                
+                if (this.player.horizontalPosition > e.horizontalPosition + e.width ||
                     this.player.horizontalPosition + this.player.width < e.horizontalPosition) {
-                    console.log("----------------------------------------")
-                }
+                        
+                        this.player.isGrounded=false;
+                    }
             }
 
 
