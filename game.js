@@ -7,6 +7,7 @@ const restart = document.querySelector("#restart");
 const exit = document.querySelector("#exit");
 const killSound = document.querySelector("#effect");
 const music = document.querySelector("#music");
+
 class Game {
     constructor() {
         this.board = document.querySelector("#board");
@@ -27,7 +28,9 @@ class Game {
     movement(e) {
         if (!this.gameStop) {
             this.player.move(e);
-            //intentava cridar aqui lo de cambiar les  classes, per si desde dins el objecte playey (funcio move()) no podia llegirho
+            /*
+//this feature is not being used now, we display the same picture when caracter goes left or right, BUT IT WORKS and have the css classes done.
+
             if (e.key === "ArrowRight") {
                 this.player.playerElement.classList.remove("player-going-left")
                 this.player.playerElement.classList.add("player-going-right")
@@ -35,7 +38,7 @@ class Game {
             else if (e.key === "ArrowLeft") {
                 this.player.playerElement.classList.remove("player-going-right");
                 this.player.playerElement.classList.add("player-going-left");
-            }
+            }*/
         }
     }
     interaction(e) {
@@ -88,7 +91,7 @@ class Game {
         else if (this.level === 2) {
             enemy = new Block(this.boardWidth, this.boardHeight, newElement, 3);
         }
-        else if (this.level === 2) {
+        else if (this.level === 3) {
             enemy = new Block(this.boardWidth, this.boardHeight, newElement, 5);
         }
         this.enemyArray.push(enemy);
@@ -109,43 +112,49 @@ class Game {
         }
     }
     checkForCollissions() {
-        this.enemyArray.forEach((e) => {
-            //BLOCK LATERAL COLLISIONS WITH PLAYER
-            if (this.player.verticalPosition < e.height) {//check if player its jumping over it
+        if (this.enemyArray.length > 0) {
+            console.log(this.enemyArray)
 
-                if (this.player.horizontalPosition + this.player.width >= e.horizontalPosition
-                    && this.player.horizontalPosition <= e.horizontalPosition + e.width) {
+            this.enemyArray.forEach((e) => {
+                console.log(e)
 
-                    music.src = "./sound/Cursed Forest Soundscape.wav";
-                    this.gameStop = true;
-                    this.board.className = ("you-lose");
-                }
-            }
-            //BlOCK VERTICAL COLLISIONS WITH PLAYER
-            if (this.player.verticalPosition === e.height) {
-                if (this.player.horizontalPosition + this.player.width >= e.horizontalPosition
-                    && this.player.horizontalPosition <= e.horizontalPosition + e.width) {
-                    killSound.play();
-                    console.log("enemy killed");
-                    this.removeEnemy(this.enemyArray.indexOf(e));
-                }
-            }
-            //BLOCKS LATERAL COLLISSIONS WITH BOX--it works , but it would be cool to add that if a box crush an enemy the enemy gets deleted.
-            this.boxArray.forEach((b) => {
-                if (b.verticalPosition <= e.height &&
-                    b.horizontalPosition <= e.horizontalPosition + e.width &&
-                    b.horizontalPosition + b.width >= e.horizontalPosition) {
+                //BLOCK LATERAL COLLISIONS WITH PLAYER
+                if (this.player.verticalPosition < e.height) {//check if player its jumping over it
 
-                    if (e.direction === "left") {
-                        e.direction = "right";
-                        e.blockElement.classList.add("swap")
-                    } else {
-                        e.direction = "left";
-                        e.blockElement.classList.remove("swap")
+                    if (this.player.horizontalPosition + this.player.width >= e.horizontalPosition
+                        && this.player.horizontalPosition <= e.horizontalPosition + e.width) {
+
+                        music.src = "./sound/Cursed Forest Soundscape.wav";
+                        this.gameStop = true;
+                        this.board.className = ("you-lose");
                     }
                 }
+                //BlOCK VERTICAL COLLISIONS WITH PLAYER
+                if (this.player.verticalPosition === e.height) {
+                    if (this.player.horizontalPosition + this.player.width >= e.horizontalPosition
+                        && this.player.horizontalPosition <= e.horizontalPosition + e.width) {
+                        killSound.play();
+                        console.log("enemy killed");
+                        this.removeEnemy(this.enemyArray.indexOf(e));
+                    }
+                }
+                //BLOCKS LATERAL COLLISSIONS WITH BOX--it works , but it would be cool to add that if a box crush an enemy the enemy gets deleted.
+                this.boxArray.forEach((b) => {
+                    if (b.verticalPosition <= e.height &&
+                        b.horizontalPosition <= e.horizontalPosition + e.width &&
+                        b.horizontalPosition + b.width >= e.horizontalPosition) {
+
+                        if (e.direction === "left") {
+                            e.direction = "right";
+                            e.blockElement.classList.add("swap")
+                        } else {
+                            e.direction = "left";
+                            e.blockElement.classList.remove("swap")
+                        }
+                    }
+                })
             })
-        })
+        }
     }
     checkForBoxPile() {
         this.boxArray.forEach((b) => {
@@ -190,19 +199,22 @@ class Game {
     checkPlayerBoxCollisions() {
         this.boxArray.forEach((e) => {
 
-            if (this.player.verticalPosition > e.verticalPosition+ e.height &&
-                this.player.verticalPosition < e.verticalPosition+ e.height + 5) {
+            if (this.player.verticalPosition > e.verticalPosition + e.height &&
+                this.player.verticalPosition < e.verticalPosition + e.height + 3) {
 
-                    console.log(this.player.verticalPosition,"posicio inicial")
+                console.log(this.player.verticalPosition, "posicio inicial")
                 if (
                     this.player.horizontalPosition < e.horizontalPosition + e.width &&
                     this.player.horizontalPosition + this.player.width > e.horizontalPosition) {
 
-                        this.player.verticalPosition = e. verticalPosition + e.height;
-                        console.log(this.player.verticalPosition,"posicio modificada")
-                        this.playerElement.style.bottom = `${this.player.verticalPosition}px`;// AL COMENTAR LA LINEA (QUE TE LERROR) DEIXA DANAR EL TOP
+                    this.player.verticalPosition = e.verticalPosition + e.height;
+                    this.player.isGrounded = true;
 
-                        //this.player.playerElement.style.bottom = `${e. verticalPosition + e.height}px`;//INTENTO FER LOK ADALT PERO NO VA
+                    console.log(this.player.verticalPosition, "posicio modificada")
+
+                } else if (this.player.horizontalPosition > e.horizontalPosition + e.width &&
+                    this.player.horizontalPosition + this.player.width < e.horizontalPosition) {
+                    console.log("----------------------------------------")
                 }
             }
 
@@ -221,11 +233,11 @@ class Game {
                         console.log("lateral collision:");
 
                         if (this.player.horizontalPosition <= e.horizontalPosition) {
-                            console.log("we are on the left"),
-                                this.player.horizontalPosition = e.horizontalPosition - this.player.width;
+                            //console.log("we are on the left"),
+                            this.player.horizontalPosition = e.horizontalPosition - this.player.width;
                         }
                         else if (this.player.horizontalPosition >= e.horizontalPosition) {
-                            console.log("we are on the right");
+                            //console.log("we are on the right");
                             this.player.horizontalPosition = e.horizontalPosition + e.width;
                         }
                     }
@@ -271,9 +283,7 @@ class Game {
                 game.addVictory();
                 this.addBox();
 
-                //add right side limit?
-            } else {
-                //add epilectic background?
+
             }
         }
     }
@@ -332,23 +342,23 @@ function animate() {
         game.addBox();
     }
     if (frames % 400 === 0) {
-        game.addEnemy();
+        // game.addEnemy();
     }
     if (frames % 900 === 0) {
-        game.addBox();
+        // game.addBox();
     }
     if (game.level === 2) {
 
         if (frames % 500 === 0) {
-            game.addEnemy();
+            //game.addEnemy();
         }
         if (frames % 700 === 0) {
 
-            game.addBox();
+            //game.addBox();
         }
     }
     else if (game.level === 3) {
-        if (frames % 5000 === 0) {
+        if (frames % 500 === 0) {
             game.addEnemy();
         }
         if (frames % 100 === 0) {

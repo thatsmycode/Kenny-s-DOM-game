@@ -13,6 +13,7 @@ class Player {
         this.boardHeight = BoardHeight;
         this.canJump= true;
         this.jumps = 0;
+        this.isGrounded = true;
     }
     move(e){
         if(e.key === "ArrowRight"){
@@ -32,6 +33,8 @@ class Player {
             if(this.canJump){
                 console.log(this.jumps++);
                 this.verticalPosition += 70;
+this.isGrounded = false;
+
                 if(this.verticalPosition + this.height >= this.boardHeight){  
                     this.verticalPosition = this.boardHeight - this.height;
                 }
@@ -52,12 +55,16 @@ class Player {
 
     }
     fall(){
-        this.verticalPosition -= 2;
-        if(this.verticalPosition <= 0){
-            this.verticalPosition = 0;
-        }  
-        this.playerElement.style.bottom = `${this.verticalPosition}px`; 
-        
+        if(!this.isGrounded){
+            
+            this.verticalPosition -= 2;
+            console.log("player-gravity")
+            if(this.verticalPosition <= 0){
+                this.verticalPosition = 0;
+                this.isGrounded = true;
+            }  
+            this.playerElement.style.bottom = `${this.verticalPosition}px`; 
+        }
     }
 
 
@@ -151,7 +158,7 @@ class InteractionBox  {
     open(e){
         console.log(e.key)
         if (e.key === " "){
-        console.log("interactionBox opened!");
+        //console.log("interactionBox opened!");
         this.isOpened = true;
         confetti();
         }
