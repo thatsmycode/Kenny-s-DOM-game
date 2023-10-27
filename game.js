@@ -240,18 +240,6 @@ class Game {
                 
             }
             
-            /* else if(this.player.verticalPosition === e.verticalPosition + e.height){
-                
-                if (this.player.horizontalPosition > e.horizontalPosition + e.width ||
-                    this.player.horizontalPosition + this.player.width < e.horizontalPosition) {
-
-                        console.log(this.player.horizontalPosition, "player left")
-                        console.log(this.player.horizontalPosition + this.player.width, "player right")
-                        
-                        this.player.isGrounded=false;
-                    }
-            } */
-
 
             if (this.player.verticalPosition + this.player.height > e.verticalPosition) {
                 //we check that we are not under the box
