@@ -15,4 +15,8 @@
 
 - boxes( extended box class) that you can interact with
 
-![alt text](./img/game-design.png)
+![game desing scheme](./img/game-design.png)
+
+##Presentation
+
+- https://docs.google.com/presentation/d/10U6MFz6EJ7kPNaqTYrNgD6vk-BD628fheTXZi176Mzc/edit?usp=sharing
