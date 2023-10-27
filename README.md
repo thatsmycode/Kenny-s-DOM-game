@@ -20,3 +20,13 @@
 ##Presentation
 
 - https://docs.google.com/presentation/d/10U6MFz6EJ7kPNaqTYrNgD6vk-BD628fheTXZi176Mzc/edit?usp=sharing
+
+##Project review
+
+-The game meets the proposed requierements and achieved the backlog features, even tough with a different classes structure, finally the InteractionBox class used for the final door is not an extension of the Box class.
+
+-The game presents a consistency in the themes used, that helps building a story. And the music and sound effects helps the player engage.
+
+-The difficulty (by enemy's frequency and speed) has been carefully balanced in order to present an increassing challenge for each level you advance.
+
+-The game provides with the basic elements that can be easily modified or extended in order to amplify the gaming experience by introducing new elements in future versions.
