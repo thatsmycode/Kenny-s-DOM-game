@@ -1,4 +1,4 @@
-#Platform 2d game
+#DOM Platform 2d game
 
 -The player moves side to side, and is able to jump, there are enmys that kill you if they collide lateraly.
 
